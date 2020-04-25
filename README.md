@@ -52,7 +52,7 @@ response:
 ```
 > Tips: Currency Code can be found in https://www.xe.com/en/iso4217.php
 ```
-GET http://localhost:5008/?from=USD&to=EUR&amount=1000
+GET http://localhost:6001/?from=USD&to=EUR&amount=1000
 
 response: 
 {
