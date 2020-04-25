@@ -166,7 +166,7 @@ const currencies = {
   ZAR: "South African Rand",
   ZMK: "Zambian Kwacha (pre-2013)",
   ZMW: "Zambian Kwacha",
-  ZWL: "Zimbabwean Dollar"
+  ZWL: "Zimbabwean Dollar",
 };
 
-module.exports = currencies
+export default currencies;
