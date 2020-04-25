@@ -13,8 +13,8 @@
   "author": "",
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/gjuoun/currency-api.git"
+    "type": "git",
+    "url": "https://github.com/gjuoun/currency-api.git"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -25,6 +25,7 @@
     "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "typescript": "^3.8.3"
   }
 }

@@ -17,28 +17,14 @@ const path_1 = __importDefault(require("path"));
 const lowdb_1 = __importDefault(require("lowdb"));
 const FileAsync_1 = __importDefault(require("lowdb/adapters/FileAsync"));
 const currencies_1 = __importDefault(require("./currencies"));
-const API_KEY = process.env.CURRENCYLAYER_API_KEY || "b24fee235c48dc440cb7c7c6c3d2b866";
+const adapter = new FileAsync_1.default(path_1.default.join(__dirname, "db.json"));
+const db = lowdb_1.default(adapter);
+/* --------------------- Global Variable Initialization --------------------- */
+const API_KEY = process.env.CURRENCYLAYER_API_KEY;
 // currencyList= "AED,AFN,ALL,AMD,ANG,AOA,ARS,AUD,AWG..."
 const currencyList = Object.keys(currencies_1.default).join(",");
 const apiUrl = `http://api.currencylayer.com/live?access_key=${API_KEY}&currencies=${currencyList}&format=1`;
-/* response example
- data: {
-    success: true,
-    terms: 'https://currencylayer.com/terms',
-    privacy: 'https://currencylayer.com/privacy',
-    timestamp: 1585499706,
-    source: 'USD',
-    quotes: {
-      USDUSD: 1,
-      USDAUD: 1.622041,
-      USDCAD: 1.40235,
-      USDPLN: 4.07375,
-      USDMXN: 23.391039
-    }
-  }
-*/
-const adapter = new FileAsync_1.default(path_1.default.join(__dirname, "db.json"));
-const db = lowdb_1.default(adapter);
+/* ------------------- End Global Variable Initialization ------------------- */
 function fetchAndSaveToLowDb(url) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield axios_1.default.get(url);
@@ -80,10 +66,11 @@ function convert(amount = 1, from, to) {
             const USDToRate = parseFloat(quotes[`USD${to.toUpperCase()}`]);
             // console.log(quotes[`USDRMB`]);
             return {
+                amount,
                 from,
                 to,
                 timestamp,
-                rate: (amount * USDToRate) / USDFromRate,
+                value: (amount * USDToRate) / USDFromRate,
             };
         }
         catch (e) {

@@ -20,12 +20,17 @@ if (process.env.NODE_ENV !== "production") {
 const express_1 = __importDefault(require("express"));
 const exchange_1 = require("./exchange");
 const app = express_1.default();
+/* --------------------------------- Routes --------------------------------- */
 // query: from, to, amount
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     console.log("Get request from ", req.ip);
+    // ?? is dealing with null/undefined to set fallback value
     if (req.query.from) {
-        const { amount, from, to } = req.query;
-        const result = yield exchange_1.convert(+amount, from, to);
+        const from = (_a = req.query.from, (_a !== null && _a !== void 0 ? _a : "CAD"));
+        const to = (_b = req.query.to, (_b !== null && _b !== void 0 ? _b : "CNY"));
+        const amount = parseInt(req.query.amount) || 1;
+        const result = yield exchange_1.convert(amount, from, to);
         return res.send({ success: true, data: result });
     }
     res.send({
@@ -36,6 +41,9 @@ app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 app.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send(yield exchange_1.getAll());
 }));
+/* -------------------------------------------------------------------------- */
+/*                  Start server and fetch rate every 4 hours                 */
+/* -------------------------------------------------------------------------- */
 const port = process.env.PORT || 6001;
 app.listen(port, () => {
     console.log(`ExchangeAPI is running on ${port}`);
