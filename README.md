@@ -17,7 +17,7 @@
 Requirement: To serve in local, you need Redis installed in local/remote
 
 1. Clone this repo
-2. Copy ".env.example" as ".env", remember to set your "REDIS_HOST", "REDIS_PORT" and "CURRENCYLAYER_API_KEY"
+2. Copy ".env.example" as ".env", remember to set your "PORT", and "CURRENCYLAYER_API_KEY"
 3. Run "npm install"
 4. Run "npm run buildRun"
 
