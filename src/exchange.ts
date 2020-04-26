@@ -1,7 +1,7 @@
 import axios from "axios";
 import path from "path";
 import lowdb from "lowdb";
-import FileSync from "lowdb/adapters/FileAsync";
+import FileSync from "lowdb/adapters/FileSync";
 import currencies from "./currencies";
 
 const adapter = new FileSync(path.join(__dirname, "db.json"));
@@ -18,8 +18,8 @@ export async function fetchAndSaveToLowDb(url: string) {
   const response = await axios.get(url);
 
   if (response.data.success) {
-    (await db).set("rate", response.data).write();
-    (await db).set("lastFetchAt", Date.now()).write();
+    db.set("rate", response.data).write();
+    db.set("lastFetchAt", Date.now()).write();
     return;
   } else {
     console.log(response.data.error.info);
@@ -27,8 +27,8 @@ export async function fetchAndSaveToLowDb(url: string) {
 }
 
 export async function updateLatestRate() {
-  const rate = (await db).get("rate").value();
-  const lastFetchAt = (await db).get("lastFetchAt").value();
+  const rate = db.get("rate").value();
+  const lastFetchAt = db.get("lastFetchAt").value();
 
   // set 4 hours as interval = 14,400,000 milliseconds
   const fourHours = 1000 * 60 * 60 * 4;
@@ -68,8 +68,7 @@ export async function convert(amount: number = 1, from: string, to: string) {
 
 export async function getAll() {
   try {
-    const rate = (await db).get("rate").value();
-    return rate;
+    return db.get("rate").value();
   } catch (e) {
     console.log("Cannot get rate from DB");
   }

@@ -3,17 +3,20 @@ import dotenv from "dotenv";
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
-import express from "express";
+import express, { NextFunction } from "express";
 import { convert, updateLatestRate, getAll } from "./exchange";
 
 const app = express();
 
-
 /* --------------------------------- Routes --------------------------------- */
 
+app.use((req: express.Request, res: express.Response, next: NextFunction) => {
+  console.log("Get request from ip - ", req.ip);
+  next();
+});
+
 // query: from, to, amount
-app.get("/", async (req, res) => {
-  console.log("Get request from ", req.ip);
+app.get("/convert", async (req, res) => {
   // ?? is dealing with null/undefined to set fallback value
   if (req.query.from) {
     const from = <string>req.query.from ?? "CAD";
@@ -30,7 +33,10 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/all", async (req, res) => {
-  res.send(await getAll());
+  res.send({
+    success: true,
+    data: await getAll(),
+  });
 });
 
 /* -------------------------------------------------------------------------- */
