@@ -4,7 +4,7 @@ import lowdb from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import currencies from "./currencies";
 
-const adapter = new FileSync(path.join(__dirname, "db.json"));
+const adapter = new FileSync(path.join(__dirname, "../db.json"));
 const db = lowdb(adapter);
 
 /* --------------------- Global Variable Initialization --------------------- */
