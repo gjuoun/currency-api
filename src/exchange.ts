@@ -1,11 +1,8 @@
 import axios from "axios";
-import path from "path";
-import lowdb from "lowdb";
-import FileSync from "lowdb/adapters/FileSync";
+import ms from 'ms'
 import currencies from "./currencies";
-
-const adapter = new FileSync(path.join(__dirname, "db.json"));
-const db = lowdb(adapter);
+import { db } from './db/db.index'
+import { Rate } from './types/types.index'
 
 /* --------------------- Global Variable Initialization --------------------- */
 const API_KEY = process.env.CURRENCYLAYER_API_KEY;
@@ -14,12 +11,18 @@ const currencyList = Object.keys(currencies).join(",");
 const apiUrl = `http://api.currencylayer.com/live?access_key=${API_KEY}&currencies=${currencyList}&format=1`;
 /* ------------------- End Global Variable Initialization ------------------- */
 
-export async function fetchAndSaveToLowDb(url: string) {
+export async function fetchRate(url: string) {
   const response = await axios.get(url);
 
   if (response.data.success) {
-    db.set("rate", response.data).write();
-    db.set("lastFetchAt", Date.now()).write();
+    let { data } = response
+    let rate: Rate = {
+      timestamp: data.timestamp,
+      source: "USD",
+      quotes: data.quotes
+    }
+    db.set("rate", rate).write();
+    db.set("lastFetchAt", Math.round(Date.now() / 1000)).write();
     return;
   } else {
     console.log(response.data.error.info);
@@ -31,45 +34,42 @@ export async function updateLatestRate() {
   const lastFetchAt = db.get("lastFetchAt").value();
 
   // set 4 hours as interval = 14,400,000 milliseconds
-  const fourHours = 1000 * 60 * 60 * 4;
+  // const fourHours = 1000 * 60 * 60 * 4;
+  const fourHours = ms("4h");
 
-  if (!rate || Date.now() - lastFetchAt > fourHours) {
+  if (!rate ||
+    Math.round(Date.now() / 1000) - lastFetchAt > fourHours) {
     console.log("Fetch new rate !");
-    await fetchAndSaveToLowDb(apiUrl);
+    await fetchRate(apiUrl);
   }
   // fetch rate every 4 hours
   setInterval(async () => {
-    await fetchAndSaveToLowDb(apiUrl);
+    await fetchRate(apiUrl);
     console.log("Fetched new rate at ", new Date().toString());
   }, fourHours);
 }
 
-export async function convert(amount: number = 1, from: string, to: string) {
+export async function convert(from: string, toArr: string[]) {
   try {
-    const rate = (await db).get("rate").value();
+    const rate = db.get("rate").value();
     const { quotes, timestamp } = rate;
 
-    const USDFromRate = parseFloat(quotes[`USD${from.toUpperCase()}`]);
-    const USDToRate = parseFloat(quotes[`USD${to.toUpperCase()}`]);
-    // console.log(quotes[`USDRMB`]);
+    let convertedQuotes: any = {}
+    for (let to of toArr) {
+      const USDFromRate = parseFloat(quotes[`USD${from.toUpperCase()}`]);
+      const USDToRate = parseFloat(quotes[`USD${to.toUpperCase()}`]);
+      convertedQuotes[to] = USDToRate / USDFromRate
+    }
 
     return {
-      amount,
-      from,
-      to,
       timestamp,
-      value: (amount * USDToRate) / USDFromRate,
+      from,
+      // to: toArr,
+      quotes: convertedQuotes
     };
   } catch (e) {
     console.log("Exchange:convert Error fetching rates");
-    return null;
   }
 }
 
-export async function getAll() {
-  try {
-    return db.get("rate").value();
-  } catch (e) {
-    console.log("Cannot get rate from DB");
-  }
-}
+

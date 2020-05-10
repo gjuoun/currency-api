@@ -4,7 +4,8 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 import express, { NextFunction } from "express";
-import { convert, updateLatestRate, getAll } from "./exchange";
+import { convert, updateLatestRate } from "./exchange";
+import { db } from "./db/db.index";
 
 const app = express();
 
@@ -17,25 +18,28 @@ app.use((req: express.Request, res: express.Response, next: NextFunction) => {
 
 // query: from, to, amount
 app.get("/convert", async (req, res) => {
-  // ?? is dealing with null/undefined to set fallback value
-  if (req.query.from) {
+  if (req.query.from && req.query.to) {
+    // from = "CAD"
     const from = <string>req.query.from ?? "CAD";
-    const to = <string>req.query.to ?? "CNY";
-    const amount = parseInt(<string>req.query.amount) || 1;
-    const result = await convert(amount, from, to);
+    // query.to = "USD, CAD, CNY,..." 
+    const toArr = (<string>req.query.to).split(',') ?? ["CNY"];
+    const result = await convert(from, toArr);
     return res.send({ success: true, data: result });
   }
+  else {
+    res.status(400)
+    res.send({
+      success: false,
+      message: "no query parameter is provided, need amount, from, to",
+    });
+  }
 
-  res.send({
-    success: false,
-    message: "no query parameter is provided, need amount, from, to",
-  });
 });
 
 app.get("/all", async (req, res) => {
   res.send({
     success: true,
-    data: await getAll(),
+    data: db.get("rate").value()
   });
 });
 
