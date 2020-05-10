@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Exchange API
 
 Convert currencies and cache exchange rate from [CurrencyLayer](https://currencylayer.com/) for every 4 hours

@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const path_1 = __importDefault(require("path"));
 const lowdb_1 = __importDefault(require("lowdb"));
-const FileAsync_1 = __importDefault(require("lowdb/adapters/FileAsync"));
+const FileSync_1 = __importDefault(require("lowdb/adapters/FileSync"));
 const currencies_1 = __importDefault(require("./currencies"));
-const adapter = new FileAsync_1.default(path_1.default.join(__dirname, "db.json"));
+const adapter = new FileSync_1.default(path_1.default.join(__dirname, "../db.json"));
 const db = lowdb_1.default(adapter);
 /* --------------------- Global Variable Initialization --------------------- */
 const API_KEY = process.env.CURRENCYLAYER_API_KEY;
@@ -29,8 +29,8 @@ function fetchAndSaveToLowDb(url) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield axios_1.default.get(url);
         if (response.data.success) {
-            (yield db).set("rate", response.data).write();
-            (yield db).set("lastFetchAt", Date.now()).write();
+            db.set("rate", response.data).write();
+            db.set("lastFetchAt", Date.now()).write();
             return;
         }
         else {
@@ -41,8 +41,8 @@ function fetchAndSaveToLowDb(url) {
 exports.fetchAndSaveToLowDb = fetchAndSaveToLowDb;
 function updateLatestRate() {
     return __awaiter(this, void 0, void 0, function* () {
-        const rate = (yield db).get("rate").value();
-        const lastFetchAt = (yield db).get("lastFetchAt").value();
+        const rate = db.get("rate").value();
+        const lastFetchAt = db.get("lastFetchAt").value();
         // set 4 hours as interval = 14,400,000 milliseconds
         const fourHours = 1000 * 60 * 60 * 4;
         if (!rate || Date.now() - lastFetchAt > fourHours) {
@@ -83,8 +83,7 @@ exports.convert = convert;
 function getAll() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const rate = (yield db).get("rate").value();
-            return rate;
+            return db.get("rate").value();
         }
         catch (e) {
             console.log("Cannot get rate from DB");
