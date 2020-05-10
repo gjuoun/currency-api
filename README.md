@@ -6,4 +6,5 @@ Convert currencies and cache exchange rate from [CurrencyLayer](https://currency
 
 [Postman API documentation](https://documenter.getpostman.com/view/3220489/SzmfZHs4)
 
+### API design scratch
 ![](image.png)
