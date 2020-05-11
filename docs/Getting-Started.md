@@ -1,6 +1,4 @@
-## Exchange API
-
-> Convert currencies and cache exchange rate from [CurrencyLayer](https://currencylayer.com/) for every 4 hours
+# Getting Started
 
 [Github repo](https://github.com/gjuoun/exchange-api)
 
@@ -30,4 +28,4 @@
 
 ### API design scratch
 
-![](image.png)
+![](../image.png)

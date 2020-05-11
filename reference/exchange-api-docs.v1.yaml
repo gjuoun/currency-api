@@ -428,8 +428,6 @@ components:
               USDZMK: 9001.203593
               USDZMW: 18.576435
               USDZWL: 322.000001
-      x-tags:
-        - Model
     Data:
       title: Data
       type: object
@@ -443,6 +441,4 @@ components:
           properties:
             '[from_to]':
               type: number
-      x-tags:
-        - Model
   securitySchemes: {}
