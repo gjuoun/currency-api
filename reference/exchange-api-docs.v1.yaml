@@ -1,0 +1,270 @@
+openapi: 3.0.0
+info:
+  title: Get all quotes
+  version: '1.0'
+  contact:
+    name: John Guo
+    email: gjuoun@gmail.com
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /convert:
+    get:
+      summary: Get all quotes
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                'from=USD&to=CNY,CAD,EUR,AUD,GBP':
+                  value:
+                    success: true
+                    data:
+                      timestamp: 1589128505
+                      source: USD
+                      quotes:
+                        USDCNY: 7.074104
+                        USDCAD: 1.40175
+                        USDEUR: 0.911536
+                        USDAUD: 1.530402
+                        USDGBP: 0.806062
+      operationId: get-convert
+      description: "Currency Code can be found in Wikipedia: \nhttps://en.wikipedia.org/wiki/List_of_circulating_currencies"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+            examples: {}
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: from
+          required: true
+          description: single currency code
+        - schema:
+            type: string
+          in: query
+          name: to
+          required: true
+          description: 'a string of currencies split by comma "," e.g. "CNY,CAD,EUR,AUD,GBP"'
+    parameters: []
+  /all:
+    get:
+      summary: Convert currency
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+              examples:
+                All:
+                  value:
+                    success: true
+                    data:
+                      timestamp: 1589128505
+                      source: USD
+                      quotes:
+                        USDAED: 3.67315
+                        USDAFN: 76.203991
+                        USDALL: 114.903989
+                        USDAMD: 484.110403
+                        USDANG: 1.795199
+                        USDAOA: 551.905041
+                        USDARS: 66.472813
+                        USDAUD: 1.530402
+                        USDAWG: 1.8
+                        USDAZN: 1.70397
+                        USDBAM: 1.803839
+                        USDBBD: 2.019276
+                        USDBDT: 84.99451
+                        USDBGN: 1.80549
+                        USDBHD: 0.378178
+                        USDBIF: 1906
+                        USDBMD: 1
+                        USDBND: 1.413261
+                        USDBOB: 6.895677
+                        USDBRL: 5.732404
+                        USDBSD: 1.000046
+                        USDBTC: 0.000116
+                        USDBTN: 75.58479
+                        USDBWP: 12.144339
+                        USDBYN: 2.435844
+                        USDBYR: 19600
+                        USDBZD: 2.015864
+                        USDCAD: 1.40175
+                        USDCDF: 1810.000362
+                        USDCHF: 0.970982
+                        USDCLF: 0.029928
+                        USDCLP: 825.803912
+                        USDCNY: 7.074104
+                        USDCOP: 3896.5
+                        USDCRC: 568.93705
+                        USDCUC: 1
+                        USDCUP: 26.5
+                        USDCVE: 102.00036
+                        USDCZK: 25.132604
+                        USDDJF: 177.720394
+                        USDDKK: 6.880904
+                        USDDOP: 55.040393
+                        USDDZD: 128.33601
+                        USDEGP: 15.563556
+                        USDERN: 15.000358
+                        USDETB: 33.703876
+                        USDEUR: 0.911536
+                        USDFJD: 2.25304
+                        USDFKP: 0.805884
+                        USDGBP: 0.806062
+                        USDGEL: 3.220391
+                        USDGGP: 0.805884
+                        USDGHS: 5.74504
+                        USDGIP: 0.805884
+                        USDGMD: 51.18039
+                        USDGNF: 9450.000355
+                        USDGTQ: 7.705603
+                        USDGYD: 209.34286
+                        USDHKD: 7.76695
+                        USDHNL: 25.030389
+                        USDHRK: 6.938593
+                        USDHTG: 107.33289
+                        USDHUF: 323.140388
+                        USDIDR: 14920
+                        USDILS: 3.506704
+                        USDIMP: 0.805884
+                        USDINR: 75.53504
+                        USDIQD: 1190
+                        USDIRR: 42105.000352
+                        USDISK: 146.240386
+                        USDJEP: 0.805884
+                        USDJMD: 142.83448
+                        USDJOD: 0.709504
+                        USDJPY: 106.67604
+                        USDKES: 106.050385
+                        USDKGS: 78.903801
+                        USDKHR: 4110.000351
+                        USDKMF: 453.750384
+                        USDKPW: 900
+                        USDKRW: 1219.803792
+                        USDKWD: 0.30935
+                        USDKYD: 0.833556
+                        USDKZT: 421.99093
+                        USDLAK: 9005.000349
+                        USDLBP: 1512.763039
+                        USDLKR: 186.51808
+                        USDLRD: 198.503775
+                        USDLSL: 18.390382
+                        USDLTL: 2.95274
+                        USDLVL: 0.60489
+                        USDLYD: 1.420381
+                        USDMAD: 9.825039
+                        USDMDL: 17.831157
+                        USDMGA: 3800.000347
+                        USDMKD: 56.826776
+                        USDMMK: 1395.135304
+                        USDMNT: 2793.825377
+                        USDMOP: 7.984837
+                        USDMRO: 357.00003
+                        USDMUR: 39.710379
+                        USDMVR: 15.503741
+                        USDMWK: 737.503739
+                        USDMXN: 23.672604
+                        USDMYR: 4.334039
+                        USDMZN: 68.080377
+                        USDNAD: 18.530377
+                        USDNGN: 390.000344
+                        USDNIO: 34.403725
+                        USDNOK: 10.217039
+                        USDNPR: 120.93559
+                        USDNZD: 1.629196
+                        USDOMR: 0.383447
+                        USDPAB: 1.000138
+                        USDPEN: 3.399039
+                        USDPGK: 3.430375
+                        USDPHP: 50.495039
+                        USDPKR: 159.650375
+                        USDPLN: 4.20475
+                        USDPYG: 6531.670104
+                        USDQAR: 3.641038
+                        USDRON: 4.453404
+                        USDRSD: 108.455038
+                        USDRUB: 73.40369
+                        USDRWF: 937.5
+                        USDSAR: 3.756262
+                        USDSBD: 8.267992
+                        USDSCR: 17.168052
+                        USDSDG: 55.325038
+                        USDSEK: 9.771904
+                        USDSGD: 1.412704
+                        USDSHP: 0.805884
+                        USDSLL: 9860.000339
+                        USDSOS: 583.000338
+                        USDSRD: 7.458038
+                        USDSTD: 22051.386135
+                        USDSVC: 8.751671
+                        USDSYP: 514.434235
+                        USDSZL: 18.52037
+                        USDTHB: 32.02037
+                        USDTJS: 10.265663
+                        USDTMT: 3.51
+                        USDTND: 2.912504
+                        USDTOP: 2.31435
+                        USDTRY: 7.089104
+                        USDTTD: 6.757574
+                        USDTWD: 29.855038
+                        USDTZS: 2314.203635
+                        USDUAH: 26.838273
+                        USDUGX: 3800.322804
+                        USDUSD: 1
+                        USDUYU: 43.139569
+                        USDUZS: 10109.000335
+                        USDVEF: 9.987504
+                        USDVND: 23400.5
+                        USDVUV: 119.847683
+                        USDWST: 2.784713
+                        USDXAF: 604.99802
+                        USDXAG: 0.06474
+                        USDXAU: 0.000587
+                        USDXCD: 2.70255
+                        USDXDR: 0.734807
+                        USDXOF: 605.000332
+                        USDXPF: 110.4036
+                        USDYER: 250.375037
+                        USDZAR: 18.350904
+                        USDZMK: 9001.203593
+                        USDZMW: 18.576435
+                        USDZWL: 322.000001
+      operationId: get-all
+      description: 'Get all currency quotes, base currency is USD'
+    parameters: []
+components:
+  schemas:
+    Response:
+      title: Response
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/Data'
+    Data:
+      title: Data
+      type: object
+      properties:
+        timestamp:
+          type: number
+        from:
+          type: string
+        quotes:
+          type: object
+          properties:
+            '[from_to]':
+              type: number
+  securitySchemes: {}
