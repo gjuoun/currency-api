@@ -48,8 +48,7 @@ paths:
           required: true
           description: 'a string of currencies split by comma "," e.g. "CNY,CAD,EUR,AUD,GBP"'
       tags:
-        - Usage
-        - all
+        - API Usage
     parameters: []
   /all:
     get:
@@ -240,8 +239,7 @@ paths:
       operationId: get-all
       description: 'Get all currency quotes, base currency is USD'
       tags:
-        - Usage
-        - convert
+        - API Usage
     parameters: []
 components:
   schemas:
