@@ -58,12 +58,12 @@ export async function convert(from: string, toArr: string[]) {
     for (let to of toArr) {
       const USDFromRate = parseFloat(quotes[`USD${from.toUpperCase()}`]);
       const USDToRate = parseFloat(quotes[`USD${to.toUpperCase()}`]);
-      convertedQuotes[to] = USDToRate / USDFromRate
+      convertedQuotes[`${from + to}`] = USDToRate / USDFromRate
     }
 
     return {
       timestamp,
-      from,
+      source: from,
       // to: toArr,
       quotes: convertedQuotes
     };
