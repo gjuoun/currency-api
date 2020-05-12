@@ -4,10 +4,14 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 import express, { NextFunction } from "express";
+import cors from 'cors'
 import { convert, updateLatestRate } from "./exchange";
 import { db } from "./db/db.index";
 
 const app = express();
+app.use(cors({
+  origin: "https://stoplight.io",
+}))
 
 /* --------------------------------- Routes --------------------------------- */
 
