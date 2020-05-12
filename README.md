@@ -26,8 +26,10 @@
       -p 6001:6001 \
       exchange-api:1.0
 
-* * *
 
-### API design scratch
+## Roadmap
 
-![](image.png)
+- [x] Cache Exchange Rate every 4 hours
+- [x] Dockerfile
+- [ ] Have SQL database options (postgres)
+- [ ] Websocket support
